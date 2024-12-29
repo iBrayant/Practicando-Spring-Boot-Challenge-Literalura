@@ -1,0 +1,9 @@
+com\alura\literalura\dto\GutendexResponse.class
+com\alura\literalura\service\LiteraturaService.class
+com\alura\literalura\repository\AutorRepository.class
+com\alura\literalura\repository\LibroRepository.class
+com\alura\literalura\dto\LibroDTO.class
+com\alura\literalura\dto\AutorDTO.class
+com\alura\literalura\model\Autor.class
+com\alura\literalura\model\Libro.class
+com\alura\literalura\LiterAluraApplication.class
