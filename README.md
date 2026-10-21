@@ -1,110 +1,88 @@
 # LiterAlura
 
-LiterAlura es una aplicación de consola Java que permite buscar y gestionar información sobre libros del Proyecto Gutenberg utilizando su API pública (Gutendex).
+![Java](https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.3-6DB33F?logo=springboot&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
+![Licencia](https://img.shields.io/badge/licencia-MIT-green)
+
+Aplicación de consola en Java que busca libros en el catálogo del Proyecto Gutenberg a través de la API pública [Gutendex](https://gutendex.com/), los guarda en PostgreSQL y permite consultar los libros, los autores y estadísticas por idioma.
+
+> Challenge **LiterAlura** del programa Oracle Next Education (Alura Latam), Back-end con Spring Boot.
+
+<!-- TODO: captura de la consola con el menú (guardar en docs/img/) -->
+<!-- ![Menú](docs/img/menu.png) -->
 
 ## Características
 
-- Búsqueda de libros por título
-- Almacenamiento de libros y autores en base de datos PostgreSQL
-- Visualización de libros guardados
-- Listado de autores
-- Búsqueda de autores por año
-- Estadísticas de libros por idioma
+- **Búsqueda por título** en la API de Gutendex y guardado del libro con su autor en la base de datos.
+- **Listado de libros guardados:** título, autor, idioma y número de descargas.
+- **Listado de autores** con sus años de nacimiento y fallecimiento.
+- **Autores vivos en un año:** consulta JPQL con parámetros sobre los autores guardados.
+- **Estadísticas por idioma:** cantidad de libros guardados de cada idioma.
 
-## Requisitos Previos
+## Stack
 
-- Java 17 o superior
-- Maven
-- PostgreSQL 17.2
-- Base de datos 'literalura' creada en PostgreSQL
+Java 17 · Spring Boot 3.2.3 · Spring Data JPA · PostgreSQL · `java.net.http.HttpClient` · Jackson · Lombok · Maven
 
-## Configuración
+## Cómo funciona
 
-1. **Base de Datos**
+```
+Menú de consola → LiteraturaService → API Gutendex (HttpClient + Jackson → DTOs)
+                         │
+                         └→ Repositorios JPA → PostgreSQL (libros y autores)
+```
+
+## Estructura
+
+```
+src/main/java/com/alura/literalura/
+├── LiterAluraApplication.java   -> menú de consola (CommandLineRunner)
+├── service/LiteraturaService    -> consulta a Gutendex y lógica de negocio
+├── dto/                         -> respuesta de la API (GutendexResponse, LibroDTO, AutorDTO)
+├── model/                       -> entidades Libro y Autor
+└── repository/                  -> repositorios Spring Data JPA
+```
+
+## Cómo correrlo
+
+Requisitos: Java 17+, Maven y PostgreSQL.
+
+1. Crea la base de datos:
+
    ```sql
    CREATE DATABASE literalura;
    ```
 
-2. **Configuración de la Base de Datos**
-   - Archivo: `src/main/resources/application.properties`
-   ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/literalura
-   spring.datasource.username=postgres
-   spring.datasource.password=tu_contraseña
-   ```
+2. Define las variables de entorno. La contraseña no tiene valor por defecto:
 
-## Instalación
-
-1. Clonar el repositorio
-2. Configurar la base de datos PostgreSQL
-3. Actualizar las credenciales en `application.properties`
-4. Ejecutar:
    ```bash
-   mvn clean install
+   export DB_PASSWORD="tu_contraseña"
+   # Opcionales (valores por defecto entre paréntesis)
+   export DB_URL="jdbc:postgresql://localhost:5432/literalura"   # (ese mismo)
+   export DB_USER="postgres"                                      # (postgres)
    ```
 
-## Uso
+3. Ejecuta:
 
-Para iniciar la aplicación:
-```bash
-mvn spring-boot:run
-```
+   ```bash
+   mvn spring-boot:run
+   ```
 
-### Menú Principal
+Las tablas se crean automáticamente al arrancar.
 
-1. **Buscar y guardar libro por título**
-   - Busca libros en el Proyecto Gutenberg
-   - Guarda la información en la base de datos
-
-2. **Ver todos los libros**
-   - Muestra los libros guardados
-   - Incluye título, autor, idioma y descargas
-
-3. **Ver todos los autores**
-   - Lista los autores guardados
-   - Muestra años de nacimiento y fallecimiento
-
-4. **Buscar autores vivos en un año específico**
-   - Encuentra autores que vivían en un año determinado
-
-5. **Ver estadísticas de idiomas**
-   - Muestra distribución de libros por idioma
-
-## Tecnologías Utilizadas
-
-- Spring Boot 3.2.3
-- Spring Data JPA
-- PostgreSQL
-- Maven
-- Gutendex API
-
-## Estructura del Proyecto
+## Menú
 
 ```
-src/main/java/com/alura/literalura/
-├── LiterAluraApplication.java
-├── dto/
-│   ├── AutorDTO.java
-│   ├── LibroDTO.java
-│   └── GutendexResponse.java
-├── model/
-│   ├── Autor.java
-│   └── Libro.java
-├── repository/
-│   ├── AutorRepository.java
-│   └── LibroRepository.java
-└── service/
-    └── LiteraturaService.java
+1. Buscar y guardar libro por título
+2. Ver todos los libros
+3. Ver todos los autores
+4. Buscar autores vivos en un año específico
+5. Ver estadísticas de idiomas
+6. Salir
 ```
 
-## Contribución
+## Autor
 
-1. Fork el repositorio
-2. Crea una rama para tu funcionalidad (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit tus cambios (`git commit -am 'Agrega nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Crea un Pull Request
+**Brayant Vásquez Gómez** · [GitHub](https://github.com/iBrayant) · [LinkedIn](https://linkedin.com/in/brayant-vásquez-gómez)
 
-## Licencia
-
-Este proyecto está bajo la Licencia MIT. 
+Licencia [MIT](LICENSE).
